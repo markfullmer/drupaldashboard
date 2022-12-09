@@ -1,0 +1,19 @@
+{
+    "name": "markfullmer/drupaldashboard",
+    "description": "Get current status of a list of issues from drupal.org",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Markfullmer\\Drupaldashboard\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "markfullmer",
+            "email": "mfullmer@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}

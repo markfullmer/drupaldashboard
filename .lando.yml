@@ -1,0 +1,4 @@
+name: drupal-dashboard
+recipe: lamp
+config:
+  webroot: public_html
