@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Markfullmer\\Drupaldashboard\\": "src/"
+            "markfullmer\\drupaldashboard\\": "src/"
         }
     },
     "authors": [
@@ -15,5 +15,7 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require": {
+        "erusev/parsedown": "^1.7"
+    }
 }

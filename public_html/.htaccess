@@ -1,0 +1,6 @@
+AddHandler application/x-httpd-php81 .php .php5 .php4 .php3
+
+# Bypass Siteground's Cloudflare cache
+<IfModule mod_headers.c>
+  Header set Cache-Control "private"
+</IfModule>

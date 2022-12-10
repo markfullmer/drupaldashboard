@@ -1,0 +1,1 @@
+a:4:{s:3:"url";s:64:"https://www.drupal.org/project/simplesamlphp_auth/issues/3289683";s:5:"title";s:72:"New 4.x branch for Drupal 10 compatibility with SimpleSamlPHP dev-master";s:18:"field_issue_status";s:2:"15";s:7:"changed";s:10:"1669998413";}

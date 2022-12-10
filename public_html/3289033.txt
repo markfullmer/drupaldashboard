@@ -1,0 +1,1 @@
+a:4:{s:3:"url";s:56:"https://www.drupal.org/project/pathologic/issues/3289033";s:5:"title";s:39:"Automated Drupal 10 compatibility fixes";s:18:"field_issue_status";s:1:"8";s:7:"changed";s:10:"1670001907";}
