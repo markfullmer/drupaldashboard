@@ -1,1 +1,0 @@
-a:4:{s:3:"url";s:63:"https://www.drupal.org/project/fullcalendar_view/issues/3324916";s:5:"title";s:23:"Drupal 10 compatibility";s:18:"field_issue_status";s:1:"1";s:7:"changed";s:10:"1669959305";}

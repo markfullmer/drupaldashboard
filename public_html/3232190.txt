@@ -1,1 +1,0 @@
-a:4:{s:3:"url";s:52:"https://www.drupal.org/project/linkit/issues/3232190";s:5:"title";s:20:"CKEditor 5 readiness";s:18:"field_issue_status";s:2:"13";s:7:"changed";s:10:"1670410329";}

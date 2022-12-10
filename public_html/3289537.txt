@@ -1,1 +1,0 @@
-a:4:{s:3:"url";s:52:"https://www.drupal.org/project/seckit/issues/3289537";s:5:"title";s:39:"Automated Drupal 10 compatibility fixes";s:18:"field_issue_status";s:2:"14";s:7:"changed";s:10:"1666032138";}
