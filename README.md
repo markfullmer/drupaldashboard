@@ -3,15 +3,15 @@
 ## Purpose
 Generate a table of issues from drupal.org that you've got your eye on.
 
+This uses the slow but steady [drupal.org API](https://www.drupal.org/drupalorg/docs/apis/rest-and-other-apis).
+
 ## Usage
 Input your request as query parameters to the URL of this site.
 
 | Query Parameter | Role | Example |
 | --------------- | ---- | ------- |
 | `issues`        | Retrieve core or contrib issues by number | [?issues=3287213+3297177](?issues=3287213+3297177) |
-| `projects`        | Retrieve all open issues for project(s) (find project IDs by viewing page source `shortlink` value) | [?projects=2549777+2975380](?projects=2549777+2975380) |
-| `sort`          | Sort by `changed`, `module`, or `status` | [?issues=3287213+3297177&sort=status](?issues=3287213+3297177&sort=status) |
-| `include_closed`          | (Boolean) Whether or not to include closed issues | [?issues=3287213+3297177&include_closed=1](?issues=3287213+3297177&include_closed=1) |
+
 
 ## Sample Output
 

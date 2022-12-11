@@ -16,11 +16,11 @@ class DrupalDashboard {
    *   An array of issue ids from drupal.org
    */
   public function __construct($issue_numbers) {
-    $yesterday = time() - 60 * 60 * 24;
+    $last_hour = time() - 60 * 60;
     foreach ($issue_numbers as $i) {
       $i = (int) $i;
       $file = $i . '.txt';
-      if (file_exists($file) && filemtime($file) > $yesterday) {
+      if (file_exists($file) && filemtime($file) > $last_hour) {
         $issue = unserialize(file_get_contents($file));
       }
       else {
@@ -31,6 +31,7 @@ class DrupalDashboard {
         }
         $raw_data = $data['list'][0];
         $issue = [
+          'id' => $i,
           'url' => $raw_data['url'],
           'title' => $raw_data['title'],
           'field_issue_status' => $raw_data['field_issue_status'],
@@ -39,15 +40,28 @@ class DrupalDashboard {
         file_put_contents($file, serialize($issue));
       }
       $issues[$issue['changed']] = [
+        'id' => $i,
         'module' => $this->project_name($issue['url']),
         'title' => $issue['title'],
         'status' => $this->status_map($issue['field_issue_status']),
         'changed' => date("F j, Y", $issue['changed']),
         'url' => $issue['url'],
+        'remove' => $this->getRemoveLink($issue_numbers, $i),
       ];
     }
     krsort($issues);
     $this->issues = $issues;
+  }
+
+  protected function getRemoveLink($issue_numbers, $i) {
+    $remaining = [];
+    foreach ($issue_numbers as $n) {
+      if ($n != $i) {
+        $remaining[] = $n;
+      }
+    }
+    $query = '?issues=' . implode('+', $remaining);
+    return $query;
   }
 
   protected function cleanup() {
@@ -69,12 +83,21 @@ class DrupalDashboard {
   protected function status_map($id) {
     $map = [
       '1' => 'Active',
+      '2' => 'Fixed',
+      '3' => 'Closed (duplicate)',
+      '4' => 'Postponed',
+      '5' => 'Closed (won\'t fix)',
+      '6' => 'Closed (works as designed)',
       '7' => 'Closed (fixed)',
-      '8' => 'Needs Review',
-      '13' => 'Needs Work',
-      '14' => 'Reviewed & Tested by the Community',
+      '8' => 'Needs review',
+      '13' => 'Needs work',
+      '14' => 'Reviewed & tested by the community',
       '15' => 'Patch (to be ported)',
+      '16' => 'Postponed (maintainer needs more info)',
+      '17' => 'Closed (outdated)',
+      '18' => 'Closed (cannot reproduce)',
     ];
+
     if (isset($map[$id])) {
       return $map[$id];
     }
@@ -85,9 +108,9 @@ class DrupalDashboard {
     $output = [];
     $output[] = '<div id="table">';
 
-    $output[] = '<table><thead><th>Module</th><th>Issue</th><th>Status</th><th>Last Activity</th></thead>';
+    $output[] = '<table><thead><th>Module</th><th>Issue</th><th>Status</th><th>Last Activity</th><th>Remove</th></thead>';
     foreach ($this->issues as $issue) {
-      $output[] = '<tr><td>' . $issue['module'] . '</td><td><a href="' . $issue['url'] . '">' . $issue['title'] . '</a></td><td>' . $issue['status'] . '</td><td>' . $issue['changed'] . '</td></tr>';
+      $output[] = '<tr><td>' . $issue['module'] . '</td><td><a href="' . $issue['url'] . '">' . $issue['title'] . '</a></td><td>' . $issue['status'] . '</td><td>' . $issue['changed'] . '</td><td><a href=" ' . $issue['remove'] . '">&#8855;</a></td></tr>';
     }
     return implode("", $output);
   }
