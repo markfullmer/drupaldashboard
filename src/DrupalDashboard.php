@@ -16,11 +16,11 @@ class DrupalDashboard {
    *   An array of issue ids from drupal.org
    */
   public function __construct($issue_numbers) {
-    $last_hour = time() - 60 * 60;
+    $yesterday = time() - 60 * 60 *24;
     foreach ($issue_numbers as $i) {
       $i = (int) $i;
       $file = $i . '.txt';
-      if (file_exists($file) && filemtime($file) > $last_hour) {
+      if (file_exists($file) && filemtime($file) > $yesterday) {
         $issue = unserialize(file_get_contents($file));
       }
       else {
