@@ -11,7 +11,15 @@ echo '<div class="container">';
 if (isset($_REQUEST['issues'])) {
   $issues = [];
   $issues = explode(' ', $_REQUEST['issues']);
-  $app = new DrupalDashboard($issues);
+  $app = new DrupalDashboard($issues, 'issues');
+  echo '<h1>Drupal Issue Status Dashboard</h1>';
+  echo '<p><a href="/">Home</a> | <a href="https://github.com/markfullmer/drupaldashboard">Source code</a></p>';
+  echo $app->buildTable();
+}
+elseif (isset($_REQUEST['projects'])) {
+  $issues = [];
+  $issues = explode(' ', $_REQUEST['projects']);
+  $app = new DrupalDashboard($issues, 'projects');
   echo '<h1>Drupal Issue Status Dashboard</h1>';
   echo '<p><a href="/">Home</a> | <a href="https://github.com/markfullmer/drupaldashboard">Source code</a></p>';
   echo $app->buildTable();

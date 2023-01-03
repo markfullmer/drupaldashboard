@@ -14,8 +14,17 @@ class DrupalDashboard {
    *
    * @param array $issues
    *   An array of issue ids from drupal.org
+   *
+   * @param string $type
+   *  The request type: 'projects' or 'issues'
    */
-  public function __construct($issue_numbers) {
+  public function __construct($numbers, $type = 'issues') {
+    if ($type === 'projects') {
+      $issue_numbers = $this->getProjectIssues($numbers);
+    }
+    else {
+      $issue_numbers = $numbers;
+    }
     $last_hour = time() - 60 * 60;
     foreach ($issue_numbers as $i) {
       $i = (int) $i;
@@ -51,6 +60,21 @@ class DrupalDashboard {
     }
     krsort($issues);
     $this->issues = $issues;
+  }
+
+  protected function getProjectIssues($projects) {
+    $issues = [];
+    foreach ($projects as $project) {
+      $raw = file_get_contents('https://www.drupal.org/api-d7/node.json?type=project_issue&sort=changed&direction=DESC&field_project=' . $project);
+      $data = json_decode($raw, TRUE);
+      foreach ($data['list'] as $issue) {
+        $status = (string) $issue['field_issue_status'];
+        if (in_array($status, ['1', '8', '13', '14'])) {
+          $issues[] = $issue['nid'];
+        }
+      }
+    }
+    return $issues;
   }
 
   protected function getRemoveLink($issue_numbers, $i) {

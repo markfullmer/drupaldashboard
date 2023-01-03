@@ -11,6 +11,7 @@ Input your request as query parameters to the URL of this site.
 | Query Parameter | Role | Example |
 | --------------- | ---- | ------- |
 | `issues`        | Retrieve core or contrib issues by number | [?issues=3287213+3297177](?issues=3287213+3297177) |
+| `projects`      | Retrieve open issues for contrib projects | [?projects=2549777+2975380](?projects=2549777+2975380)
 
 
 ## Sample Output
