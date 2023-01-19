@@ -1,3 +1,7 @@
 vendor/
 composer.lock
 public_html/*.txt
+logs/
+public_html/php_errorlog
+webstats/
+
