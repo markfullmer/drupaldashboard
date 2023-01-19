@@ -19,13 +19,13 @@ class DrupalDashboard {
    *  The request type: 'projects' or 'issues'
    */
   public function __construct($numbers, $type = 'issues') {
+    $yesterday = time() - 60 * 60 * 24;
     if ($type === 'projects') {
       $issue_numbers = $this->getProjectIssues($numbers);
     }
     else {
       $issue_numbers = $numbers;
     }
-    $yesterday = time() - 60 * 60 * 24;
     foreach ($issue_numbers as $i) {
       $i = (int) $i;
       $file = $i . '.txt';
@@ -63,15 +63,23 @@ class DrupalDashboard {
   }
 
   protected function getProjectIssues($projects) {
+    $yesterday = time() - 60 * 60 * 24;
     $issues = [];
     foreach ($projects as $project) {
-      $raw = file_get_contents('https://www.drupal.org/api-d7/node.json?type=project_issue&sort=changed&direction=DESC&field_project=' . $project);
-      $data = json_decode($raw, TRUE);
-      foreach ($data['list'] as $issue) {
-        $status = (string) $issue['field_issue_status'];
-        if (in_array($status, ['1', '8', '13', '14'])) {
-          $issues[] = $issue['nid'];
+      $file = 'project-' . $project . '.txt';
+      if (file_exists($file) && filemtime($file) > $yesterday) {
+        $issues = unserialize(file_get_contents($file));
+      }
+      else {
+        $raw = file_get_contents('https://www.drupal.org/api-d7/node.json?type=project_issue&sort=changed&direction=DESC&field_project=' . $project);
+        $data = json_decode($raw, TRUE);
+        foreach ($data['list'] as $issue) {
+          $status = (string) $issue['field_issue_status'];
+          if (in_array($status, ['1', '8', '13', '14'])) {
+            $issues[] = $issue['nid'];
+          }
         }
+        file_put_contents($file, serialize($issues));
       }
     }
     return $issues;
