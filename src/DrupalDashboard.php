@@ -142,7 +142,7 @@ class DrupalDashboard {
 
     $output[] = '<table><thead><th>Module</th><th>Issue</th><th>Status</th><th>Last Activity</th><th>Remove</th></thead>';
     foreach ($this->issues as $issue) {
-      $output[] = '<tr><td>' . $issue['module'] . '</td><td><a href="' . $issue['url'] . '">' . $issue['title'] . '</a></td><td>' . $issue['status'] . '</td><td>' . $issue['changed'] . '</td><td><a href=" ' . $issue['remove'] . '">&#8855;</a></td></tr>';
+      $output[] = '<tr><td>' . $issue['module'] . '</td><td><a href="' . $issue['url'] . '">' . htmlentities($issue['title']) . '</a></td><td>' . $issue['status'] . '</td><td>' . $issue['changed'] . '</td><td><a href=" ' . $issue['remove'] . '">&#8855;</a></td></tr>';
     }
     return implode("", $output);
   }
