@@ -10,7 +10,7 @@ echo '<div class="container">';
 
 $title = 'Drupal Issue Status Dashboard';
 if (isset($_REQUEST['title'])) {
-  $title = filter_input(INPUT_GET, 'title', FILTER_SANITIZE_STRING);
+  $title = htmlspecialchars(strip_tags($_REQUEST['title']));
 }
 
 if (isset($_REQUEST['issues'])) {
