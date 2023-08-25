@@ -8,11 +8,16 @@ $markdown = file_get_contents('../README.md');
 $parser = new Parsedown();
 echo '<div class="container">';
 
+$title = 'Drupal Issue Status Dashboard';
+if (isset($_REQUEST['title'])) {
+  $title = filter_input(INPUT_GET, 'title', FILTER_SANITIZE_STRING);
+}
+
 if (isset($_REQUEST['issues'])) {
   $issues = [];
   $issues = explode(' ', $_REQUEST['issues']);
   $app = new DrupalDashboard($issues, 'issues');
-  echo '<h1>Drupal Issue Status Dashboard</h1>';
+  echo "<h1>$title</h1>";
   echo '<p><a href="/">Home</a> | <a href="https://github.com/markfullmer/drupaldashboard">Source code</a></p>';
   echo $app->buildTable();
 }
@@ -20,7 +25,7 @@ elseif (isset($_REQUEST['projects'])) {
   $issues = [];
   $issues = explode(' ', $_REQUEST['projects']);
   $app = new DrupalDashboard($issues, 'projects');
-  echo '<h1>Drupal Issue Status Dashboard</h1>';
+  echo "<h1>$title</h1>";
   echo '<p><a href="/">Home</a> | <a href="https://github.com/markfullmer/drupaldashboard">Source code</a></p>';
   echo $app->buildTable();
 }
