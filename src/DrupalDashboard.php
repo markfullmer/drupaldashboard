@@ -9,6 +9,8 @@ class DrupalDashboard {
 
   public array $issues;
 
+  public string $type;
+
   /**
    * Class constructor.
    *
@@ -19,6 +21,7 @@ class DrupalDashboard {
    *  The request type: 'projects' or 'issues'
    */
   public function __construct($numbers, $type = 'issues') {
+    $this->type = $type;
     $yesterday = time() - 60 * 60 * 24;
     if ($type === 'projects') {
       $issue_numbers = $this->getProjectIssues($numbers);
@@ -165,10 +168,17 @@ class DrupalDashboard {
   public function buildTable() {
     $output = [];
     $output[] = '<div id="table">';
-
-    $output[] = '<table><thead><th>Module</th><th>Issue</th><th>Status</th><th>Last Activity</th><th>Remove</th></thead>';
-    foreach ($this->issues as $issue) {
-      $output[] = '<tr><td>' . $issue['module'] . '</td><td><a href="' . $issue['url'] . '">' . htmlentities($issue['title']) . '</a></td><td>' . $issue['status'] . '</td><td>' . $issue['changed'] . '</td><td><a href=" ' . $issue['remove'] . '">&#8855;</a></td></tr>';
+    if ($this->type === 'projects') {
+      $output[] = '<table><thead><th>Module</th><th>Issue</th><th>Status</th><th>Last Activity</th></thead>';
+      foreach ($this->issues as $issue) {
+        $output[] = '<tr><td>' . $issue['module'] . '</td><td><a href="' . $issue['url'] . '">' . htmlentities($issue['title']) . '</a></td><td>' . $issue['status'] . '</td><td>' . $issue['changed'] . '</td></tr>';
+      }
+    }
+    else {
+      $output[] = '<table><thead><th>Module</th><th>Issue</th><th>Status</th><th>Last Activity</th><th>Remove</th></thead>';
+      foreach ($this->issues as $issue) {
+        $output[] = '<tr><td>' . $issue['module'] . '</td><td><a href="' . $issue['url'] . '">' . htmlentities($issue['title']) . '</a></td><td>' . $issue['status'] . '</td><td>' . $issue['changed'] . '</td><td><a href=" ' . $issue['remove'] . '">&#8855;</a></td></tr>';
+      }
     }
     return implode("", $output);
   }
