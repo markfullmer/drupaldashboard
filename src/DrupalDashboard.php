@@ -66,20 +66,43 @@ class DrupalDashboard {
     $yesterday = time() - 60 * 60 * 24;
     $issues = [];
     foreach ($projects as $project) {
-      $file = 'project-' . $project . '.txt';
-      if (file_exists($file) && filemtime($file) > $yesterday) {
-        $issues = unserialize(file_get_contents($file));
+      $project_id = NULL;
+      if (is_numeric($project)) {
+        $project_id = $project;
       }
       else {
-        $raw = file_get_contents('https://www.drupal.org/api-d7/node.json?type=project_issue&sort=changed&direction=DESC&field_project=' . $project);
+        $project_file = file_get_contents('projects.txt');
+        $existing_projects = json_decode($project_file, TRUE);
+        if (array_key_exists($project, $existing_projects)) {
+          $project_id = $existing_projects[$project];
+        }
+        else {
+          $project_json = file_get_contents("https://www.drupal.org/api-d7/node.json?field_project_machine_name=$project");
+          $project_data = json_decode($project_json, TRUE);
+          $project_id = $project_data['list'][0]['nid'] ?? NULL;
+          if (isset($project_id)) {
+            $existing_projects[$project] = $project_id;
+            file_put_contents('projects.txt', json_encode($existing_projects));
+          }
+        }
+      }
+      $file = 'project-' . $project_id . '.txt';
+      if (file_exists($file) && filemtime($file) > $yesterday) {
+        $project_issues = unserialize(file_get_contents($file));
+        $issues = array_merge($issues, $project_issues);
+      }
+      else {
+        $project_issues = [];
+        $raw = file_get_contents("https://www.drupal.org/api-d7/node.json?type=project_issue&sort=changed&direction=DESC&field_project=$project_id");
         $data = json_decode($raw, TRUE);
         foreach ($data['list'] as $issue) {
           $status = (string) $issue['field_issue_status'];
           if (in_array($status, ['1', '8', '13', '14'])) {
+            $project_issues[] = $issue['nid'];
             $issues[] = $issue['nid'];
           }
         }
-        file_put_contents($file, serialize($issues));
+        file_put_contents($file, serialize($project_issues));
       }
     }
     return $issues;
