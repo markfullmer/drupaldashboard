@@ -72,7 +72,10 @@ class DrupalDashboard {
       }
       else {
         $project_file = file_get_contents('projects.txt');
-        $existing_projects = json_decode($project_file, TRUE);
+        $existing_projects = [];
+        if (file_exists($project_file)) {
+          $existing_projects = json_decode($project_file, TRUE);
+        }
         if (array_key_exists($project, $existing_projects)) {
           $project_id = $existing_projects[$project];
         }
