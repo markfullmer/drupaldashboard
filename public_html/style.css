@@ -8,7 +8,7 @@ html {
   padding: 0;
   left: 0;
   top: 0;
-  font-size: 100%
+  font-size: 1.05rem;
 }
 
 .center,
@@ -17,9 +17,10 @@ html {
   margin-right: auto
 }
 
-* {
+body {
   font-family: Lato, Helvetica, sans-serif;
   color: #333447;
+  background-color:antiquewhite;
   line-height: 1.5
 }
 
@@ -90,7 +91,6 @@ tr {
 }
 
 th {
-  background: white;
   position: sticky;
   top: 0;
   text-align: left;
@@ -105,8 +105,18 @@ td {
   overflow: auto;
 }
 
-code {
-  font-family: monospace;
-  color: black;
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #333447;
+    color: white;
+  }
+  th {
+    background-color: #333447;
+  }
+  tr {
+    border-bottom: 1pt solid white;
+  }
+  a, a:hover, a:visited, a:link {
+    color: white;
+  }
 }
-
